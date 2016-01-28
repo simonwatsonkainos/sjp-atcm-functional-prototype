@@ -1,0 +1,42 @@
+# Java
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.rar
+
+# Thumbnails
+Thumbs.db
+
+# Object files
+*.obj
+*.exe
+*.so
+
+# Eclipse
+.classpath
+.compatibility
+.project
+.pydevproject
+.factorypath
+.checkstyle
+.metadata/
+.settings/
+.pmd
+.springBeans
+
+# Maven
+target/
+
+# Subversion
+.svn/
+
+# Misc
+*.log
+*.orig
+*~
+
+# MacOS
+.DS_Store
