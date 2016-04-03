@@ -1,26 +1,42 @@
-package uk.gov.moj.sjp.atcm.command;
+package uk.gov.moj.sjp.atcm.command.domain;
 
-import uk.gov.moj.sjp.atcm.persistence.dao.Defendant;
-import uk.gov.moj.sjp.atcm.persistence.dao.Offence;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
-public class CreateSjpCase {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SjpCase {
 
     private String tflCaseId;
     private String initiationCode;
-    private String libraOriginatingOrg;
+
     private char summonsCode;
     private String informantName;
+    private String libraOriginatingOrg;
     private String libraHearingLocation;
     private String dateOfHearing;
     private String timeOfHearing;
-    private Defendant defendant;
-    private Offence offence;
 
-    public CreateSjpCase() { }
+    private SjpDefendant defendant;
 
-    public CreateSjpCase(String tflCaseId, String initiationCode, String libraOriginatingOrg, char summonsCode,
-                         String informantName, String libraHearingLocation, String dateOfHearing,
-                         String timeOfHearing, Defendant defendant) {
+    @JsonUnwrapped
+    private List<SjpOffence> offences = new ArrayList<SjpOffence>();
+
+    public SjpCase() { }
+
+    @JsonCreator
+    public SjpCase(@JsonProperty("tflCaseId") String tflCaseId,
+                   @JsonProperty("initiationCode") String initiationCode,
+                   @JsonProperty("libraOriginatingOrg") String libraOriginatingOrg,
+                   @JsonProperty("summonsCode") char summonsCode,
+                   @JsonProperty("informantName") String informantName,
+                   @JsonProperty("libraHearingLocation") String libraHearingLocation,
+                   @JsonProperty("dateOfHearing") String dateOfHearing,
+                   @JsonProperty("timeOfHearing") String timeOfHearing,
+                   @JsonProperty("defendant") SjpDefendant defendant,
+                   @JsonProperty("offences") List<SjpOffence> offences) {
         this.tflCaseId = tflCaseId;
         this.initiationCode = initiationCode;
         this.libraOriginatingOrg = libraOriginatingOrg;
@@ -30,6 +46,10 @@ public class CreateSjpCase {
         this.dateOfHearing = dateOfHearing;
         this.timeOfHearing = timeOfHearing;
         this.defendant = defendant;
+
+        if(offences != null) {
+            this.offences = offences;
+        }
     }
 
     public String getTflCaseId() {
@@ -52,8 +72,8 @@ public class CreateSjpCase {
         return libraOriginatingOrg;
     }
 
-    public void setLibraOriginatingOrg(String libraOriginatingOrg) {
-        this.libraOriginatingOrg = libraOriginatingOrg;
+    public void setLibraOriginatingOrg(String libraOriginationOrg) {
+        this.libraOriginatingOrg = libraOriginationOrg;
     }
 
     public char getSummonsCode() {
@@ -72,14 +92,6 @@ public class CreateSjpCase {
         this.informantName = informantName;
     }
 
-    public String getLibraHearingName() {
-        return libraHearingLocation;
-    }
-
-    public void setLibraHearingName(String libraHearingName) {
-        this.libraHearingLocation = libraHearingName;
-    }
-
     public String getDateOfHearing() {
         return dateOfHearing;
     }
@@ -88,11 +100,11 @@ public class CreateSjpCase {
         this.dateOfHearing = dateOfHearing;
     }
 
-    public Defendant getDefendant() {
+    public SjpDefendant getDefendant() {
         return defendant;
     }
 
-    public void setDefendant(Defendant defendant) {
+    public void setDefendant(SjpDefendant defendant) {
         this.defendant = defendant;
     }
 
@@ -116,27 +128,11 @@ public class CreateSjpCase {
         this.timeOfHearing = timeOfHearing;
     }
 
-    public Offence getOffence() {
-        return offence;
+    public List<SjpOffence> getOffences() {
+        return offences;
     }
 
-    public void setOffence(Offence offence) {
-        this.offence = offence;
-    }
-
-    @Override
-    public String toString() {
-        return "CreateSjpCase{" +
-                "tflCaseId='" + tflCaseId + '\'' +
-                ", initiationCode='" + initiationCode + '\'' +
-                ", libraOriginatingOrg='" + libraOriginatingOrg + '\'' +
-                ", summonsCode=" + summonsCode +
-                ", informantName='" + informantName + '\'' +
-                ", libraHearingLocation='" + libraHearingLocation + '\'' +
-                ", dateOfHearing='" + dateOfHearing + '\'' +
-                ", timeOfHearing='" + timeOfHearing + '\'' +
-                ", defendant=" + defendant +
-                ", offence=" + offence +
-                '}';
+    public void addOffence(SjpOffence offence) {
+        this.offences.add(offence);
     }
 }

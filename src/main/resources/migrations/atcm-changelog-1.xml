@@ -1,22 +1,228 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
-    <changeSet author="simon.watson" id="sjp-case">
+    <changeSet author="simon.watson" id="sjp-case-defendant-offence">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="sjp_case" />
             </not>
+            <not>
+                <tableExists tableName="defendant" />
+            </not>
+            <not>
+                <tableExists tableName="offence" />
+            </not>
         </preConditions>
 
         <createTable tableName="sjp_case">
-
-            <column autoIncrement="true" name="id" type="bigserial">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_book"/>
-            </column>
-
-            <column name="name" type="VARCHAR(100)">
+            <column name="case_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
-
+            <column name="defendant_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prosecutor_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="initiation_code" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="libra_originating_org" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="summons_code" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="informant_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="libra_hearing_location" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_hearing" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_of_hearing" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+
+        <createTable tableName="defendant">
+            <column name="id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="forename" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="family_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="town" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="county" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="postcode" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dob" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="offence">
+            <column autoIncrement="true" name="id" type="bigserial">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_offence"/>
+            </column>
+            <column name="case_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tfl_case_id" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="offence_sequence_no" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="libra_offence_code" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="libra_offence_date_code" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="offence_date" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="offence_wording" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ref_sjp_offence">
+            <column autoIncrement="true" name="id" type="bigserial">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_ref_sjp_offence"/>
+            </column>
+            <column name="offence_code" type="varchar(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="offence_description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fine" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="compensation" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="previous_charges" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="ref_sjp_offence">
+            <column name="id" value="1" />
+            <column name="offence_code" value="GL07025" />
+            <column name="offence_description" value="Unauthorised person attempt to or buy / sell a ticket relating to the Transport for London regional railway network" />
+            <column name="fine" value="true" />
+            <column name="compensation" value="true" />
+            <column name="previous_charges" value="true" />
+        </insert>
+
+        <insert tableName="ref_sjp_offence">
+            <column name="id" value="2" />
+            <column name="offence_code" value="PS90011" />
+            <column name="offence_description" value="Fail to produce for inspection written permission to engage in activity on Transport for London regional railway network" />
+            <column name="fine" value="true" />
+            <column name="compensation" value="true" />
+            <column name="previous_charges" value="false" />
+        </insert>
+
+        <insert tableName="sjp_case">
+            <column name="case_id" value="325345ff-58d8-4eb7-8c0e-109a36948403" />
+            <column name="defendant_id" value="c5f466f2-c8a9-4d02-9144-7ead30ec7c64" />
+            <column name="prosecutor_id" value="TFL2032376" />
+            <column name="initiation_code" value="J" />
+            <column name="libra_originating_org" value="GAFTL00" />
+            <column name="summons_code" value="M" />
+            <column name="informant_name" value="TRANSPORT FOR LONDON" />
+            <column name="libra_hearing_location" value="B01LY75" />
+            <column name="date_of_hearing" value="25/02/2016" />
+            <column name="time_of_hearing" value="11:00:00" />
+            <column name="status" value="AWAITING PLEA" />
+        </insert>
+
+        <insert tableName="sjp_case">
+            <column name="case_id" value="33a1c034-fc88-41b8-a4e9-34e13c6588e2" />
+            <column name="defendant_id" value="78cf0a9f-8ab4-4891-b128-21ee51562f27" />
+            <column name="prosecutor_id" value="TFL2041314" />
+            <column name="initiation_code" value="J" />
+            <column name="libra_originating_org" value="GAFTL00" />
+            <column name="summons_code" value="M" />
+            <column name="informant_name" value="TRANSPORT FOR LONDON" />
+            <column name="libra_hearing_location" value="B01LY75" />
+            <column name="date_of_hearing" value="25/02/2016" />
+            <column name="time_of_hearing" value="11:00:00" />
+            <column name="status" value="AWAITING PLEA" />
+        </insert>
+
+        <insert tableName="offence">
+            <column name="id" value="1" />
+            <column name="case_id" value="33a1c034-fc88-41b8-a4e9-34e13c6588e2" />
+            <column name="tfl_case_id" value="TFL2041314" />
+            <column name="offence_sequence_no" value="1" />
+            <column name="libra_offence_code" value="GL07025" />
+            <column name="libra_offence_date_code" value="1" />
+            <column name="offence_date" value="02/07/2015" />
+            <column name="offence_wording" value="On 02/07/2015 At threadneedle street EC2 Being a passenger on a Public service Vehicle operated on behalf of London Bus Services Limited being used for the carriage of passengers at separate fares where the vehicle was being operated by a Driver without a Conductor did not as directed by the Driver an Inspector or a Notice displayed on the vehicle pay the fare for the journey in accordance with the direction" />
+        </insert>
+
+        <insert tableName="offence">
+            <column name="id" value="2" />
+            <column name="case_id" value="325345ff-58d8-4eb7-8c0e-109a36948403" />
+            <column name="tfl_case_id" value="TFL2032376" />
+            <column name="offence_sequence_no" value="1" />
+            <column name="libra_offence_code" value="PS90011" />
+            <column name="libra_offence_date_code" value="1" />
+            <column name="offence_date" value="28/08/2015" />
+            <column name="offence_wording" value="On 28/08/2015 At HARROW ROAD HA9 Being a passenger on a Public Service Vehicle operated on behalf of London Bus Services Limited being used for the carriage of passengers at separate fares did use in relation to the journey you were taking a ticket which had been issued for use by another person on terms that it is not transferable" />
+        </insert>
+
+        <insert tableName="defendant">
+            <column name="id" value="78cf0a9f-8ab4-4891-b128-21ee51562f27" />
+            <column name="title" value="Mr" />
+            <column name="forename" value="Fred" />
+            <column name="family_name" value="Smith" />
+            <column name="address" value="1 Old Road" />
+            <column name="town" value="London" />
+            <column name="postcode" value="SW99 1AA" />
+            <column name="county" value="Surrey" />
+            <column name="dob" value="27/12/1965" />
+            <column name="gender" value="M" />
+        </insert>
+
+        <insert tableName="defendant">
+            <column name="id" value="c5f466f2-c8a9-4d02-9144-7ead30ec7c64" />
+            <column name="title" value="Miss" />
+            <column name="forename" value="Marian" />
+            <column name="family_name" value="Smith" />
+            <column name="address" value="1 Old Road" />
+            <column name="town" value="London" />
+            <column name="postcode" value="SW99 1AA" />
+            <column name="county" value="Berkshire" />
+            <column name="dob" value="27/02/1996" />
+            <column name="gender" value="F" />
+        </insert>
+
     </changeSet>
 </databaseChangeLog>

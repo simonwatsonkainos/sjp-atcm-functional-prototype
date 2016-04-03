@@ -1,11 +1,16 @@
-package uk.gov.moj.sjp.atcm.command;
+package uk.gov.moj.sjp.atcm.query;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.moj.sjp.atcm.persistence.dao.Defendant;
 import uk.gov.moj.sjp.atcm.persistence.dao.Offence;
 
-public class CreateSjpCase {
+import java.util.UUID;
 
-    private String tflCaseId;
+public class SjpCaseQuery {
+
+    private UUID id;
+    private String prosecutorId;
     private String initiationCode;
     private String libraOriginatingOrg;
     private char summonsCode;
@@ -13,15 +18,29 @@ public class CreateSjpCase {
     private String libraHearingLocation;
     private String dateOfHearing;
     private String timeOfHearing;
+    private String status;
     private Defendant defendant;
-    private Offence offence;
 
-    public CreateSjpCase() { }
+    @JsonProperty("offence")
+    private SjpOffenceQuery sjpOffenceQuery;
 
-    public CreateSjpCase(String tflCaseId, String initiationCode, String libraOriginatingOrg, char summonsCode,
-                         String informantName, String libraHearingLocation, String dateOfHearing,
-                         String timeOfHearing, Defendant defendant) {
-        this.tflCaseId = tflCaseId;
+    public SjpCaseQuery() { }
+
+    @JsonCreator
+    public SjpCaseQuery(@JsonProperty UUID id,
+                        @JsonProperty String prosecutorId,
+                        @JsonProperty String initiationCode,
+                        @JsonProperty String libraOriginatingOrg,
+                        @JsonProperty char summonsCode,
+                        @JsonProperty String informantName,
+                        @JsonProperty String libraHearingLocation,
+                        @JsonProperty String dateOfHearing,
+                        @JsonProperty String timeOfHearing,
+                        @JsonProperty String status,
+                        @JsonProperty Defendant defendant,
+                        @JsonProperty("offence") SjpOffenceQuery sjpOffenceQuery) {
+        this.id = id;
+        this.prosecutorId = prosecutorId;
         this.initiationCode = initiationCode;
         this.libraOriginatingOrg = libraOriginatingOrg;
         this.summonsCode = summonsCode;
@@ -29,15 +48,25 @@ public class CreateSjpCase {
         this.libraHearingLocation = libraHearingLocation;
         this.dateOfHearing = dateOfHearing;
         this.timeOfHearing = timeOfHearing;
+        this.status = status;
         this.defendant = defendant;
+        this.sjpOffenceQuery = sjpOffenceQuery;
     }
 
-    public String getTflCaseId() {
-        return tflCaseId;
+    public UUID getId() {
+        return id;
     }
 
-    public void setTflCaseId(String tflCaseId) {
-        this.tflCaseId = tflCaseId;
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getProsecutorId() {
+        return prosecutorId;
+    }
+
+    public void setProsecutorId(String prosecutorId) {
+        this.prosecutorId = prosecutorId;
     }
 
     public String getInitiationCode() {
@@ -116,18 +145,26 @@ public class CreateSjpCase {
         this.timeOfHearing = timeOfHearing;
     }
 
-    public Offence getOffence() {
-        return offence;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOffence(Offence offence) {
-        this.offence = offence;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public SjpOffenceQuery getSjpOffenceQuery() {
+        return sjpOffenceQuery;
+    }
+
+    public void setSjpOffenceQuery(SjpOffenceQuery sjpOffenceQuery) {
+        this.sjpOffenceQuery = sjpOffenceQuery;
     }
 
     @Override
     public String toString() {
         return "CreateSjpCase{" +
-                "tflCaseId='" + tflCaseId + '\'' +
+                "tflCaseId='" + prosecutorId + '\'' +
                 ", initiationCode='" + initiationCode + '\'' +
                 ", libraOriginatingOrg='" + libraOriginatingOrg + '\'' +
                 ", summonsCode=" + summonsCode +
@@ -136,7 +173,8 @@ public class CreateSjpCase {
                 ", dateOfHearing='" + dateOfHearing + '\'' +
                 ", timeOfHearing='" + timeOfHearing + '\'' +
                 ", defendant=" + defendant +
-                ", offence=" + offence +
+                ", sjpOffenceQuery=" + sjpOffenceQuery +
                 '}';
     }
 }
+
